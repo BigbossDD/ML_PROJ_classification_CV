@@ -12,7 +12,6 @@ def load_defungi_dataset(
 ):
     images = []
     lable = []
-
     # H1, H2, ..., H6 (sorted for label consistency)
     class_names = sorted([d for d in os.listdir(base_path)
         if os.path.isdir(os.path.join(base_path, d))
