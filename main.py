@@ -9,13 +9,14 @@ import tensorflow as tf
 from sklearn.metrics import classification_report
 from In_class_demo.demo import DEMO
 from models.model_2 import model_2
+from models.model_3 import model_3
 
-
+#--> names for the weights files , those will not go to git too big 
 MODEL_FILENAME_M1 = "model_1.h5"
-FORCE_RETRAIN = False  # Set True if you want to retrain and overwrite the model
 MODEL_FILENAME_M2 = "model_2.h5"
 MODEL_FILENAME_M3 = "model_3.h5"
 
+chosice_for_mode = True  # True --> train // False-> display stats
 
 def main():
     #getting the data from this path --> C:\Users\USER\OneDrive\Desktop\PSUT\ML\ML_PROJ_classification_CV\defungi
@@ -25,13 +26,13 @@ def main():
     print("Images shape:", images.shape)
     print("Labels shape:", labels.shape)
     #print(images[0])  # Print the first image array
-    print("Unique labels:", np.unique(labels))  # Print unique labels
+    #print("Unique labels:", np.unique(labels))  # Print unique labels --> they are [0 , 1 , 2 ,3 ,4  ]
     
     
 
     #---------------------------
-    #normalizing the images
-    images = images / 255.0
+   
+    images = images / 255.0 # --> norm for the images
     
     
     #-----------------------
@@ -40,44 +41,51 @@ def main():
     #validation and test sets from temp
     X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42, stratify=y_temp)
 
-    #visualizing some samples from the dataset
-    #visualizing one image
+    
+    
+    
+    #seeing one  imag
     '''
     plt.imshow(X_train[0])
     plt.title(class_names[y_train[0]])
     plt.axis("off")
     plt.show()
           '''  
+          
+          
+# models section -->>
 #---------------------------
     # i will be using GPU to fasten the training process
 
     
         #model_1 implementation on the 
-    input_shape = X_train.shape[1:]  
-    num_classes = len(class_names)  # len of classes that the modle will classify 
+    in_shape= X_train.shape[1:]  
+    len_of_class=len( class_names)  # len of classes that the modle will classify 
     
-    if os.path.exists(MODEL_FILENAME_M1) and not FORCE_RETRAIN:
-        print(f"Loading model from {MODEL_FILENAME_M1}...")
+    if os.path.exists(MODEL_FILENAME_M1) and not chosice_for_mode:
+        print(f"loading model --> {MODEL_FILENAME_M1} ")
         model = tf.keras.models.load_model(MODEL_FILENAME_M1)
-        # F1 score and classification report on test set
+        
+        
+        # a classification report on test set
         y_pred_probs = model.predict(X_test)
         y_pred = np.argmax(y_pred_probs, axis=1)
-        print("Classification Report for Model 1:")
+        print("classification report for model 1-->")
         print(classification_report(y_test, y_pred, target_names=class_names))
+        
     else:
-        print("Training model...")
+        print("training model --> ")
         with tf.device('/GPU:0'):  # optional: TF usually auto-chooses GPU
-            model = model_1(input_shape, num_classes)
+            model = model_1(in_shape, len_of_class)
             model.summary()
-            history = model.fit(
-                X_train, y_train,
-                epochs=30,
-                batch_size=32,
-                validation_data=(X_val, y_val)
-            )
-            model.save(MODEL_FILENAME_M1)
-            print(f"Model saved to {MODEL_FILENAME_M1}")
-            # F1 score and classification report on test set
+            
+            history = model.fit(X_train, y_train,epochs=30,batch_size=32,validation_data=(X_val, y_val))
+            
+            
+            model.save(MODEL_FILENAME_M1)#saving weights
+            print(f"Model saved to file with name --> {MODEL_FILENAME_M1}")
+            
+            #classification report on test -->
             y_pred_probs = model.predict(X_test)
             y_pred = np.argmax(y_pred_probs, axis=1)
             print("Classification Report for Model 1:")
@@ -87,18 +95,18 @@ def main():
     
     #------------------------------------
     #model_2
-    if os.path.exists(MODEL_FILENAME_M2) and not FORCE_RETRAIN:
-        print(f"Loading model from {MODEL_FILENAME_M2}...")
+    if os.path.exists(MODEL_FILENAME_M2) and not chosice_for_mode:
+        print(f"loading model {MODEL_FILENAME_M2} ")
         model = tf.keras.models.load_model(MODEL_FILENAME_M2)
-         # F1 score and classification report on test set
+         # f1 score and classification report on test set
         y_pred_probs = model.predict(X_test)
         y_pred = np.argmax(y_pred_probs, axis=1)
-        print("Classification Report for Model 2:")
+        print("classification report for model 2  :")
         print(classification_report(y_test, y_pred, target_names=class_names))
     else:
         print("Training model...")
         with tf.device('/GPU:0'):  # optional: TF usually auto-chooses GPU
-            model = model_2(input_shape, num_classes)
+            model = model_2(in_shape, len_of_class)
             model.summary()
             history = model.fit(
                 X_train, y_train,
@@ -106,31 +114,57 @@ def main():
                 batch_size=32,
                 validation_data=(X_val, y_val)
             )
-            model.save(MODEL_FILENAME_M2)
-            print(f"Model saved to {MODEL_FILENAME_M2}")
+            model.save(MODEL_FILENAME_M2) #saving weights
+            print(f"model saved to {MODEL_FILENAME_M2}")
             
-            # F1 score and classification report on test set
+             
+             
+             # f1 score and classification report 
             y_pred_probs = model.predict(X_test)
             y_pred = np.argmax(y_pred_probs, axis=1)
-            model.save(MODEL_FILENAME_M2)
-            print(f"Model saved to {MODEL_FILENAME_M2}")
-             # F1 score and classification report on test set
-            y_pred_probs = model.predict(X_test)
-            y_pred = np.argmax(y_pred_probs, axis=1)
-            print("Classification Report for Model 2:")
+            print("classification report for model 2:")
             print(classification_report(y_test, y_pred, target_names=class_names))
     #------------------------------------
+    
     #model_3
+
+    if os.path.exists(MODEL_FILENAME_M3) and not chosice_for_mode:
+        print(f"loading model from {MODEL_FILENAME_M3}")
+        model = tf.keras.models.load_model(MODEL_FILENAME_M3)
+         # f1 score and classification report 
+        y_pred_probs = model.predict(X_test)
+        y_pred = np.argmax(y_pred_probs, axis=1)
+        print("classification report for model 3 ")
+        print(classification_report(y_test, y_pred, target_names=class_names))
+    else:
+        print("Training mode --> ")
+        #with tf.device('/GPU:0'):  # -->old thing i tried to use 
+        model = model_3(in_shape, len_of_class)
+        model.summary()
+        history = model.fit(X_train, y_train,epochs=20,batch_size=32,validation_data=(X_val, y_val))
+        model.save(MODEL_FILENAME_M3)
+        print(f"model saved ---> {MODEL_FILENAME_M3}")
+
+             
+        y_pred_probs = model.predict(X_test)
+        y_pred = np.argmax(y_pred_probs, axis=1)
+        model.save(MODEL_FILENAME_M3)
+        print(f"Model saved to {MODEL_FILENAME_M3}")
+             # f1 score and classification report on test set
+        y_pred_probs = model.predict(X_test)
+        y_pred = np.argmax(y_pred_probs, axis=1)
+        print("classification report  model 3:")
+        print(classification_report(y_test, y_pred, target_names=class_names))
     
     
-    
-    #model.save(MODEL_FILENAME_M3)
-    #print(f"Model saved to {MODEL_FILENAME_M3}")
+
     
     
 
 if __name__ == "__main__":
-   # print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
-    main()
+    #print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+    main() #--> for training and deisplay classifica report
     #DEMO() # --> for demo 
+    
+
     print("completed.")

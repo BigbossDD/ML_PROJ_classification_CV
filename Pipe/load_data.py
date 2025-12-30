@@ -11,11 +11,10 @@ def load_defungi_dataset(
     verbose=True
 ):
     images = []
-    labels = []
+    lable = []
 
     # H1, H2, ..., H6 (sorted for label consistency)
-    class_names = sorted([
-        d for d in os.listdir(base_path)
+    class_names = sorted([d for d in os.listdir(base_path)
         if os.path.isdir(os.path.join(base_path, d))
     ])
 
@@ -38,12 +37,12 @@ def load_defungi_dataset(
             img = cv2.resize(img, img_size)
 
             images.append(img)
-            labels.append(label)
+            lable.append(label)
 
     images = np.array(images, dtype=np.float32)
-    labels = np.array(labels, dtype=np.int64)
+    lable = np.array(lable, dtype=np.int64)
 
     if verbose:
-        print(f"Loaded {len(images)} images")
+        print(f"count of img in set - -> {len(images)}  ")
 
-    return images, labels, class_names
+    return images, lable, class_names
