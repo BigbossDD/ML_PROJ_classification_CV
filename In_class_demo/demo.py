@@ -26,12 +26,14 @@ def DEMO():
     img_array = img_array / 255.0 # Normalize the image 
     #predicting the class 
     
+    class_names = ['H1', 'H2', 'H3', 'H5', 'H6']
     
     predictions = model.predict(img_array)
     print("Raw predictions:", predictions)
     predicted_class = np.argmax(predictions, axis=1)
     print(f"Predicted class: {predicted_class[0]}")
-
+    #print(f"Predicted class: {predicted_class} ({class_names[predicted_class]})")
+    print(f"Probabilities: {predictions}")
     
     #printing the result 
     
