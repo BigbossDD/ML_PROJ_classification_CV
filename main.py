@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 from models.model_1 import model_1  
 import tensorflow as tf
 from sklearn.metrics import classification_report
+from In_class_demo.demo import DEMO
+
 
 MODEL_FILENAME_M1 = "model_1.h5"
 FORCE_RETRAIN = False  # Set True if you want to retrain and overwrite the model
@@ -56,7 +58,7 @@ def main():
         print(f"Loading model from {MODEL_FILENAME_M1}...")
         model = tf.keras.models.load_model(MODEL_FILENAME_M1)
     else:
-        print("Training new model...")
+        print("Training model...")
         with tf.device('/GPU:0'):  # optional: TF usually auto-chooses GPU
             model = model_1(input_shape, num_classes)
             model.summary()
@@ -87,5 +89,6 @@ def main():
 
 if __name__ == "__main__":
    # print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
-    main()
+    #main()
+    DEMO()
     print("completed.")
