@@ -15,7 +15,7 @@ def DEMO():
     
     
     
-    path = r'In_class_demo\Test.jpg' 
+    path = r'In_class_demo\Test.jpg' # rename the image target to Test 
     
     
     img = image.load_img(path, target_size=(224, 224)) 
@@ -62,6 +62,13 @@ def DEMO():
     pred_class = np.argmax(pred, axis=1)
     print(f"Predicted class: {pred_class[0]}")
     
+    
+    print("#--------\nModel4  pred  --> ")
+    model = tf.keras.models.load_model( "model_4.h5")
+    pred = model.predict(img_arr)
+    print("Raw predctions:  ", pred)
+    pred_class = np.argmax(pred, axis=1)
+    print(f"Predicted class: {pred_class[0]}")
     
     
     

@@ -40,7 +40,7 @@ def res_block_with_down(x, filters):# residual block with downsampling
     x_neww = ReLU()(x_neww)
     return x_neww
 
-#this model has 3 stages of residual block 
+#this model has 3 stages of residuals blocks
 def model_3(input_shape, num_classes):
     inputs = Input(shape=input_shape)
     
@@ -49,15 +49,15 @@ def model_3(input_shape, num_classes):
     x = BatchNormalization()(x)
     x = ReLU()(x)
 
-    # Residual stage 1 (32 filters)
-    x = res_blocks(x, 32)# --->32 filter
+    # Residual stage 1 
+    x = res_blocks(x, 32)# --->32 filters
     x = res_blocks(x, 32)
 
-    # Residual stage 2 (64 filters)
+    #  stage: 2 
     x = res_block_with_down(x, 64)  #--->64 filter
     x = res_blocks(x, 64)
 
-    # Residual stage 3 
+    #  stage: 3 
     x = res_block_with_down(x, 128)# --->128 filter 
     x = res_blocks(x, 128)
     

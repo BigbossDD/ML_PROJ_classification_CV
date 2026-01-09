@@ -65,7 +65,7 @@ def model_4(input_shape, num_classes):
     x_1 = ReLU()(x)
     # added another  conv : 2 
     x_1 = Conv2D(32, kernel_size=3, strides= 1 ,padding="same", use_bias=False)(x_1)
-    x_1 = BatchNormalization()(x)
+    x_1 = BatchNormalization()(x_1)
     x = ReLU()(x_1)
 
     # Residual stage 1 (32 filters)
