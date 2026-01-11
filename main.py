@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from models.model_1 import model_1  
 import tensorflow as tf
 from sklearn.metrics import classification_report
-from In_class_demo.demo import DEMO
+from In_class_demo.demo2 import DEMO
 from models.model_2 import model_2
 from models.model_3 import model_3
 from models.model_4 import model_4
@@ -196,8 +196,8 @@ def main(model_num):
 
 if __name__ == "__main__":
     #print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
-    main(4) #--> for training and deisplay classifica report // also send in it the model number to train or check its score 
-    #DEMO() # --> for demo 
+    #main(4) #--> for training and deisplay classifica report // also send in it the model number to train or check its score 
+    DEMO() # --> for demo 
     
 
     print("completed!!!")

@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 # #this will be an in class demo , where i will use the saved models 1 , 2, 3 , to evaluate them on an actual yeast picture that i 
 # #will download from the internet # i will insert the image in the In_Class_Demo folder 
 
-def DEMO(): 
+def DEMOs(): 
  
     
     
